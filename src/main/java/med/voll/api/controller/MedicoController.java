@@ -33,6 +33,13 @@ public class MedicoController {
 
     @GetMapping
     public Page<DadosListagemMedico> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-        return this.repository.findAll(paginacao).map(DadosListagemMedico::new);
+        return this.repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id) {
+        Medico medico = this.repository.getReferenceById(id);
+        medico.excluir();
     }
 }
